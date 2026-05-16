@@ -11,7 +11,7 @@
       packages = with pkgs; [
         xwayland
         labwc
-        wlrctl
+        wlr-randr
         waybar
         swaybg
         rofi

@@ -1,12 +1,22 @@
-{ 
+{
+  config,
+  lib,
   ...
 }: {
-  wayland.windowManager.labwc = {
+  options.labwc.scale = lib.mkOption {
+    type = lib.types.bool;
+    default = false;
+    description = "Whether or not to scale the screen";
+  };
+
+  config.wayland.windowManager.labwc = {
     enable = true;
 
     autostart = [
       "swaybg -c '#181818' &amp;"
       "waybar >/dev/null 2>&1 &amp;"
+    ] ++ lib.optionals config.labwc.scale [
+      "wlr-randr --output eDP-1 --scale 1.75"
     ];
 
     rc = {

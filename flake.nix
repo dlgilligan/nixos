@@ -39,6 +39,27 @@
           ];
           specialArgs = { inherit inputs; };
         };
+        x1 = nixpkgs.lib.nixosSystem {
+          modules = [
+            ./modules
+            ./hosts/x1/configuration.nix
+            { nixpkgs.hostPlatform = "x86_64-linux"; }
+            { nixpkgs.config.allowUnfree = true; }
+            home-manager.nixosModules.home-manager
+            (
+              { ... }:
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.daniel = import ./home-manager/x1.nix;
+                home-manager.extraSpecialArgs = {
+                  inherit inputs;
+                };
+              }
+            )
+          ];
+          specialArgs = { inherit inputs; };
+        };
       };
     };
 }
