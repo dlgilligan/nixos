@@ -12,9 +12,11 @@
         xwayland
         labwc
         wlr-randr
+        wlopm
         waybar
         swaybg
         rofi
+        swayidle
         gtklock
       ];
     };
