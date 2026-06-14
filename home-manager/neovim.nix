@@ -25,6 +25,7 @@ in
       nixd
       gopls
       stylua
+      ansible-language-server
     ];
     plugins = let
       nvim-treesitter-with-plugins = pkgs.vimPlugins.nvim-treesitter.withPlugins (treesitter-plugins: 
@@ -32,7 +33,8 @@ in
           bash
           lua
           nix
-	  go
+	        go
+          yaml
         ]);
     in 
       with pkgs.vimPlugins; [
@@ -48,6 +50,7 @@ in
         lush-nvim
 	      (fromGitHub "6401334926b7b352594324f4e20f2162f2998a54" "main" "kabouzeid/nvim-jellybeans" [ lush-nvim ] )
         luasnip
+        dashboard-nvim
       ];
     initLua = ''
       vim.cmd('colorscheme jellybeans')
@@ -124,6 +127,10 @@ in
       vim.keymap.set("n", "<Tab>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
       vim.keymap.set("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous buffer" })
 
+      require("dashboard").setup({
+        theme = "hyper",
+      })
+
       require("guess-indent").setup({})
       require("gitsigns").setup({
           signs = {
@@ -168,6 +175,8 @@ in
       vim.lsp.enable("nixd")
       vim.lsp.config("gopls", {})
       vim.lsp.enable("gopls")
+      vim.lsp.config("ansiblels", {})
+      vim.lsp.enable("ansiblels")
     '';
   };
 }

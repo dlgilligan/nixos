@@ -8,8 +8,11 @@
     git
     wget
     pulseaudio
+    usbutils
     firefox
     fastfetch
+    kubernetes-helm
+    ansible
   ];
 
   fonts.packages = with pkgs; [

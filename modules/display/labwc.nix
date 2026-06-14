@@ -13,6 +13,7 @@
         labwc
         wlr-randr
         wlopm
+        wl-clipboard
         waybar
         swaybg
         rofi
