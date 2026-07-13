@@ -14,6 +14,7 @@
         wlr-randr
         wlopm
         wl-clipboard
+        wdisplays
         waybar
         swaybg
         rofi

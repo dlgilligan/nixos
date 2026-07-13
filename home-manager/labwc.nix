@@ -96,11 +96,11 @@
 
       timeouts = [
         {
-          timeout = 300;
+          timeout = 600;
           command = "${pkgs.gtklock}/bin/gtklock -d";
         }
         {
-          timeout = 600;
+          timeout = 900;
           command = "${pkgs.wlopm}/bin/wlopm --off '*'";
           resumeCommand = "${pkgs.wlopm}/bin/wlopm --on '*'";
         }
@@ -110,20 +110,11 @@
         }
       ];
 
-      events = [
-        {
-          event = "before-sleep";
-          command = "${pkgs.gtklock}/bin/gtklock -d";
-        }
-        {
-          event = "lock";
-          command = "${pkgs.gtklock}/bin/gtklock -d";
-        }
-        {
-          event = "unlock";
-          command = "${pkgs.procps}/bin/pkill -USR1 gtklock";
-        }
-      ];
+      events = {
+        "before-sleep" = "${pkgs.gtklock}/bin/gtklock -d";
+        "lock" = "${pkgs.gtklock}/bin/gtklock -d";
+        "unlock" = "${pkgs.procps}/bin/pkill -USR1 gtklock";
+      };
     };
   };
 }

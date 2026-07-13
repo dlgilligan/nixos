@@ -5,7 +5,7 @@
 }:
 
 let
-  fromGitHub = rev: ref: repo: extraDeps: pkgs.vimUtils.buildVimPluginFrom2Nix {
+  fromGitHub = rev: ref: repo: extraDeps: pkgs.vimUtils.buildVimPlugin {
       pname = "${lib.strings.sanitizeDerivationName repo}";
       version = ref;
       src = fetchGit {
@@ -27,6 +27,9 @@ in
       stylua
       ansible-language-server
     ];
+    withPython3 = false;
+    withRuby = false;
+
     plugins = let
       nvim-treesitter-with-plugins = pkgs.vimPlugins.nvim-treesitter.withPlugins (treesitter-plugins: 
         with treesitter-plugins; [
@@ -51,6 +54,7 @@ in
 	      (fromGitHub "6401334926b7b352594324f4e20f2162f2998a54" "main" "kabouzeid/nvim-jellybeans" [ lush-nvim ] )
         luasnip
         dashboard-nvim
+        nvim-web-devicons
       ];
     initLua = ''
       vim.cmd('colorscheme jellybeans')
@@ -87,6 +91,7 @@ in
         close_if_last_window = true,
         filesystem = {
 				  window = {
+            width = 50,
 					  mappings = {
 						  ["\\"] = "close_window",
 					  },
@@ -129,6 +134,9 @@ in
 
       require("dashboard").setup({
         theme = "hyper",
+        config = {
+          header = {},
+        },
       })
 
       require("guess-indent").setup({})
@@ -141,13 +149,19 @@ in
               changedelete = { text = "~" },
           },
       })
+      vim.keymap.set("n", "]c", ":Gitsigns next_hunk<CR>", { desc = "Next changed chunk" })
+      vim.keymap.set("n", "]C", ":Gitsigns prev_hunk<CR>", { desc = "Last changed chunk" })
       require("which-key").setup({
           delay = 0,
           icons = { mappings = vim.g.have_nerd_font },
       })
 
       require("blink-cmp").setup({
-          keymap = { preset = "default" },
+          keymap = { 
+            preset = "default",
+            ["Tab"] = { "fallback" },
+            ["S-Tab"] = { "fallback" },
+          },
           appearance = { nerd_font_variant = "mono" },
           completion = {
             documentation = { auto_show = false, auto_show_delay_ms = 500 },

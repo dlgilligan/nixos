@@ -40,8 +40,8 @@ let
 
   taskbarConfig = {
     "wlr/taskbar" = {
-      format = "{title}";
-      max-length = 50;
+      format = "{icon} {title}";
+      max-length = 30;
     };
   };
 
